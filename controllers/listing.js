@@ -79,8 +79,20 @@ module.exports.destroyListing=async (req, res) => {
     res.redirect("/listings");
 }
 
-module.exports.searchListing=async (req,res)=>{
-    const place =req.query.search;
+// module.exports.searchListing=async (req,res)=>{
+//     const place =req.query.search;
+//     const allListing = await Listing.find({ location: place });
+//     res.render("./listing/search.ejs", { allListing,place});
+// }
+
+module.exports.searchListing = async (req, res) => {
+    let place = req.query.search;
+
+    // Capitalize each word in the 'place' string
+    place = place.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+
+    // Now use the capitalized 'place' to search the database
     const allListing = await Listing.find({ location: place });
-    res.render("./listing/search.ejs", { allListing,place});
-}
+
+    res.render("./listing/search.ejs", { allListing, place });
+};
